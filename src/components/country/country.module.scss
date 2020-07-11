@@ -1,7 +1,9 @@
-.card {
-  background-color: lightblue;
-  padding: 0 15px;
+.details {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 
-  .details {
+  .key {
+    text-transform: capitalize;
   }
 }

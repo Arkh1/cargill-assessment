@@ -6,7 +6,7 @@ export interface HeaderProps {}
 export const Header = () => {
     return (
         <header className={styles.header}>
-            <h1>A Fantastic List of Countries</h1>
+            <h1 className={styles.title}>List of Countries</h1>
         </header>
     );
 };

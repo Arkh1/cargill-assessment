@@ -10,7 +10,13 @@ export const Countries = () => {
     const COUNTRIES_SERVICE_URL = 'https://restcountries.eu/rest/v2/all';
     const [data, setData] = useState({countries: [], isFetching: false});
     const [selectedCountry, setSelectedCountry] = useState({});
-    const columnHeaders = ['Country', 'Language', 'Population', 'Capital', 'Currency'];
+    const columnHeaders = [
+        { displayName: 'Country', field: 'name' },
+        { displayName: 'Language', field: 'language' },
+        { displayName: 'Population', field: 'population' },
+        { displayName: 'Capital', field: 'capital' },
+        { displayName: 'Currency', field: 'currency' }
+    ];
 
     useEffect(() => {
         const fetchCountries = async () => {
@@ -34,7 +40,7 @@ export const Countries = () => {
         };
 
         fetchCountries();
-    }, []);
+    }, [data.countries]);
 
     return (
         <div className={styles.countries}>

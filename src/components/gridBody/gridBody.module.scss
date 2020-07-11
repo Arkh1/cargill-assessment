@@ -6,13 +6,19 @@
       background-color: #eee;
     }
 
-    &:hover {
+    &:hover,
+    &.selected {
       background-color: lightblue;
       cursor: pointer;
     }
 
     .cell {
-      border-top: 1px solid #000;
+      border-top: 1px solid #ccc;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: left;
+      padding: 5px 10px;
     }
   }
 }

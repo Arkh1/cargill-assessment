@@ -1,29 +1,21 @@
 import React from 'react';
 import styles from './country.module.scss';
+import { Card } from '../card/card.component';
 
 export interface CountryProps {
     name?: string,
     capital?: string,
     language?: string,
-    currency?: string
+    currency?: string,
+    population?: string
 }
 
-export const Country = (props: CountryProps) => {
-    const {
-        name,
-        capital,
-        language,
-        currency
-    } = props;
-
-    return (
-        <div className={styles.card}>
-            <h3>{ name }</h3>
-            <div className={styles.details}>
-                <div>Capital  City: { capital }</div>
-                <div>Language: { language }</div>
-                <div>Currency: { currency }</div>
-            </div>
-        </div>
-    );
-};
+export const Country = ({ name, ...otherProps }: CountryProps) => (
+    <Card title={name}>
+        <ul className={styles.details}>
+            { Object.entries(otherProps).map(([key, value]: any[]) =>
+                <li><strong className={styles.key}>{key}:</strong> { value }</li>)
+            }
+        </ul>
+    </Card>
+);

@@ -1,29 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './card.module.scss';
 
 export interface CardProps {
-    title: string,
+    title?: string,
     children: any
 }
 
-export const Card = (props: CardProps) => {
-    const {
-        title,
-        children
-    } = props;
-
-    if (!title) {
-        return null;
-    }
-
-    return (
-        <div className={styles.card} role="region" id="cardInfo" aria-live="polite">
-            <h3 className={styles.title}>
-                { title }
-            </h3>
-            <div className={styles.content}>
-                { children }
-            </div>
+export const Card = ({ title, children }: CardProps) => (
+    <div className={`${styles.card} ${title ? '' : styles.hidden}`} role="region" id="cardInfo" aria-live="polite">
+        <h3 className={styles.title}>
+            { title }
+        </h3>
+        <div className={styles.content}>
+            { children }
         </div>
-    );
-};
+    </div>
+);

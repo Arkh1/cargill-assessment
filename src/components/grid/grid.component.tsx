@@ -5,27 +5,21 @@ import { GridBody } from '../gridBody/gridBody.component';
 import { GridFooter } from '../gridFooter/gridFooter.component';
 
 export interface GridProps {
-    columnHeaders: string[],
+    columnHeaders: any[],
     data: any[],
     selectCb?: any
 }
 
-export const Grid = (props: GridProps) => {
-    const {
-        columnHeaders,
-        data,
-        selectCb
-    } = props;
+export const Grid = ({columnHeaders, data, selectCb}: GridProps) => {
     const SORT_DIRECTION = {
         ASCENDING: 'ascending',
         DESCENDING: 'descending',
     };
     const [sortConfig, setSortConfig] = useState({ key: '', direction: '' });
-    let sortedData = [...data];
-
-    useMemo(() => {
+    const sortedData = useMemo(() => {
+        let sortableData = [...data];
         if (sortConfig.key !== '') {
-            sortedData.sort((a, b) => {
+            sortableData.sort((a, b) => {
                 if (a[sortConfig.key] < b[sortConfig.key]) {
                     return sortConfig.direction === SORT_DIRECTION.ASCENDING ? -1 : 1;
                 }
@@ -35,22 +29,27 @@ export const Grid = (props: GridProps) => {
                 return 0;
             });
         }
-        return sortedData;
-    }, [data, sortConfig]);
+        return sortableData;
+    }, [data, sortConfig, SORT_DIRECTION.ASCENDING]);
 
-    const sortColumn = (e: any, key: string) => {
+    const sortColumn = (key: string) => {
+        /*sortableData.sort((a,b) => a[formattedKey].localeCompare(b[formattedKey]));
+        setSortedData(sortableData);*/
+
         let direction = SORT_DIRECTION.ASCENDING;
-        if (sortConfig.key === key && sortConfig.direction === SORT_DIRECTION.ASCENDING) {
+        if (sortConfig && sortConfig.key === key && sortConfig.direction === SORT_DIRECTION.ASCENDING) {
             direction = SORT_DIRECTION.DESCENDING;
         }
-        setSortConfig({ key, direction });
+        setSortConfig({ key: key, direction });
     };
 
     return (
-        <table className={styles.grid}>
-            <GridHeader columnHeaders={columnHeaders} sortCb={sortColumn} />
-            <GridBody data={sortedData} selectCb={selectCb} />
-            <GridFooter columnHeaders={columnHeaders} />
-        </table>
+        <div className={styles.gridContainer}>
+            <table className={styles.grid}>
+                <GridHeader columnHeaders={columnHeaders} sortCb={sortColumn} />
+                <GridBody data={sortedData} selectCb={selectCb} />
+                <GridFooter columnHeaders={columnHeaders} />
+            </table>
+        </div>
     );
 };
