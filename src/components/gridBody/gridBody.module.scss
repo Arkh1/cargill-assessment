@@ -1,0 +1,18 @@
+.body {
+  .row {
+    transition: background-color 0.25s;
+
+    &:nth-child(odd) {
+      background-color: #eee;
+    }
+
+    &:hover {
+      background-color: lightblue;
+      cursor: pointer;
+    }
+
+    .cell {
+      border-top: 1px solid #000;
+    }
+  }
+}

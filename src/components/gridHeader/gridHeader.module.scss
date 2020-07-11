@@ -1,0 +1,12 @@
+.header {
+  .row {
+    background-color: #ccc;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    .cell {
+    }
+  }
+}
