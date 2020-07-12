@@ -5,17 +5,17 @@ import { GridBody } from '../gridBody/gridBody.component';
 import { GridFooter } from '../gridFooter/gridFooter.component';
 import { IGridHeader } from '../../types/index';
 import { SORT_DIRECTION } from '../../consts/index';
-import { getSortedData } from '../../utils/array.util';
+import * as ArrayUtils from '../../utils/array.util';
 
 export interface GridProps {
     columnHeaders: IGridHeader[],
     data: any[],
-    selectCb?: () => void
+    selectCb?: any
 }
 
 export const Grid: FunctionComponent<GridProps> = ({columnHeaders = [], data = [], selectCb}) => {
     const [sortConfig, setSortConfig] = useState({ key: '', direction: '' });
-    const sortedData = useMemo(() => getSortedData(sortConfig, data), [sortConfig, data]);
+    const sortedData = useMemo(() => ArrayUtils.getSortedData(sortConfig, data), [sortConfig, data]);
 
     const sortColumn = (key: string) => {
         let direction = SORT_DIRECTION.ASCENDING;

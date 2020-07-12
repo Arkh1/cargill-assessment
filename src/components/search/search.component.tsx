@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ChangeEvent } from 'react';
+import React, { FunctionComponent } from 'react';
 import styles from './search.module.scss';
 
 export interface SearchProps {
@@ -6,7 +6,7 @@ export interface SearchProps {
 }
 
 export const Search: FunctionComponent<SearchProps> = ({ searchCb }) => {
-    const handleChange = (e: ChangeEvent) => {
+    const handleChange = (e: { target: HTMLInputElement; }) => {
         searchCb(e.target.value);
     };
 

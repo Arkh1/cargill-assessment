@@ -16,7 +16,7 @@ export interface ICountryApi {
     name?: string,
     alpha2Code?: string,
     capital?: string,
-    languages?: Object[],
-    currencies?: Object[],
+    languages?: any[],
+    currencies?: any[],
     population?: string
 }

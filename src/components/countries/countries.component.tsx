@@ -5,7 +5,7 @@ import { Country } from '../country/country.component';
 import styles from './countries.module.scss';
 import { Search } from '../search/search.component';
 import { ICountry, ICountryApi, IGridHeader } from '../../types/index';
-import { getFilteredData } from '../../utils/utils';
+import * as ArrayUtils from '../../utils/array.util';
 
 export interface CountriesProps {}
 
@@ -21,10 +21,12 @@ export const Countries: FunctionComponent<CountriesProps> = () => {
         { displayName: 'Currency', field: 'currency' }
     ];
 
+    // Change these to useReducer
     const [data, setData] = useState<any>({countries: [], isFetching: false});
     const [queryString, setQueryString] = useState<string>('');
     const [selectedCountry, setSelectedCountry] = useState<ICountry>({});
-    const filteredData: ICountry[] = useMemo(() => getFilteredData(queryString, data.countries), [queryString, data]);
+
+    const filteredData: ICountry[] = useMemo(() => ArrayUtils.getFilteredData(queryString, data.countries), [queryString, data]);
 
     useEffect(() => {
         const fetchCountries = async () => {
@@ -35,10 +37,10 @@ export const Countries: FunctionComponent<CountriesProps> = () => {
                 const countries = response.data.map((country: ICountryApi) => ({
                     name: country.name,
                     alpha2Code: country.alpha2Code,
-                    language: country.languages[0].name,
+                    language: country.languages && country.languages[0] && country.languages[0].name,
                     population: country.population,
                     capital: country.capital,
-                    currency: country.currencies[0].name
+                    currency: country.currencies && country.currencies[0] && country.currencies[0].name
                 }));
 
                 setData({countries, isFetching: false});

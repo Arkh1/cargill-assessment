@@ -12,9 +12,7 @@ const columnHeaders = [
     { displayName: 'Column3', field: 'Column3' }
 ];
 
-export const Base = () => <GridHeader columnHeaders={columnHeaders} />;
-
-export const WithCallback = () => {
+export const Base = () => {
     const callback = () => { alert('Callback fired') };
     return <GridHeader columnHeaders={columnHeaders} sortCb={callback} />;
 };
