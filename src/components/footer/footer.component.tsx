@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import styles from './footer.module.scss'
 
 export interface FooterProps {}
 
-export const Footer = () => <footer className={styles.footer}>Created By Mark Rupp</footer>;
+export const Footer: FunctionComponent<FooterProps> = () => (
+    <footer className={styles.footer}>
+        Created By Mark Rupp
+    </footer>
+);

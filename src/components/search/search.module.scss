@@ -1,0 +1,18 @@
+.search {
+  height: 30px;
+  display: flex;
+
+  .input {
+    border: 1px solid #ddd;
+    height: 30px;
+    width: 100%;
+    padding-left: 10px;
+
+    &:focus,
+    &:active {
+      background-color: #eee;
+      outline-offset: 0;
+      outline: none;
+    }
+  }
+}

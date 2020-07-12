@@ -6,7 +6,11 @@ export default {
     component: GridHeader,
 };
 
-const columnHeaders = ['Column1', 'Column2', 'Column3'];
+const columnHeaders = [
+    { displayName: 'Column1', field: 'Column1' },
+    { displayName: 'Column2', field: 'Column2' },
+    { displayName: 'Column3', field: 'Column3' }
+];
 
 export const Base = () => <GridHeader columnHeaders={columnHeaders} />;
 

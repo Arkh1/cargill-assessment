@@ -1,22 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo, FunctionComponent } from 'react';
 import axios from 'axios';
 import { Grid } from '../grid/grid.component';
 import { Country } from '../country/country.component';
 import styles from './countries.module.scss';
+import { Search } from '../search/search.component';
+import { ICountry, ICountryApi, IGridHeader } from '../../types/index';
+import { getFilteredData } from '../../utils/utils';
 
 export interface CountriesProps {}
 
-export const Countries = () => {
-    const COUNTRIES_SERVICE_URL = 'https://restcountries.eu/rest/v2/all';
-    const [data, setData] = useState({countries: [], isFetching: false});
-    const [selectedCountry, setSelectedCountry] = useState({});
-    const columnHeaders = [
+export const Countries: FunctionComponent<CountriesProps> = () => {
+    const COUNTRIES_API_FIELDS: string[] = ['name', 'capital', 'currencies', 'languages', 'alpha2Code', 'alpha3Code', 'population', 'flag'];
+    const COUNTRIES_SERVICE_URL: string = `https://restcountries.eu/rest/v2/all?fields=${COUNTRIES_API_FIELDS.join(';')}`;
+    const columnHeaders: IGridHeader[] = [
         { displayName: 'Country', field: 'name' },
+        { displayName: 'Code', field: 'alpha2Code' },
         { displayName: 'Language', field: 'language' },
         { displayName: 'Population', field: 'population' },
         { displayName: 'Capital', field: 'capital' },
         { displayName: 'Currency', field: 'currency' }
     ];
+
+    const [data, setData] = useState<any>({countries: [], isFetching: false});
+    const [queryString, setQueryString] = useState<string>('');
+    const [selectedCountry, setSelectedCountry] = useState<ICountry>({});
+    const filteredData: ICountry[] = useMemo(() => getFilteredData(queryString, data.countries), [queryString, data]);
 
     useEffect(() => {
         const fetchCountries = async () => {
@@ -24,8 +32,9 @@ export const Countries = () => {
                 setData({countries: data.countries, isFetching: true});
                 const response = await axios.get(COUNTRIES_SERVICE_URL);
 
-                const countries = response.data.map((country: any) => ({
+                const countries = response.data.map((country: ICountryApi) => ({
                     name: country.name,
+                    alpha2Code: country.alpha2Code,
                     language: country.languages[0].name,
                     population: country.population,
                     capital: country.capital,
@@ -40,11 +49,14 @@ export const Countries = () => {
         };
 
         fetchCountries();
-    }, [data.countries]);
+    }, [COUNTRIES_SERVICE_URL]);
 
     return (
         <div className={styles.countries}>
-            <Grid columnHeaders={columnHeaders} data={data.countries} selectCb={setSelectedCountry} />
+            <div>
+                <Search searchCb={setQueryString} />
+                <Grid columnHeaders={columnHeaders} data={filteredData} selectCb={setSelectedCountry} />
+            </div>
             <Country {...selectedCountry} />
         </div>
     );

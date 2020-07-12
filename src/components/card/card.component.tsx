@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import styles from './card.module.scss';
 
 export interface CardProps {
-    title?: string,
-    children: any
+    title?: string
 }
 
-export const Card = ({ title, children }: CardProps) => (
+export const Card: FunctionComponent<CardProps> = ({ title, children }) => (
     <div className={`${styles.card} ${title ? '' : styles.hidden}`} role="region" id="cardInfo" aria-live="polite">
         <h3 className={styles.title}>
             { title }

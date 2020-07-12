@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import styles from './gridFooter.module.scss';
+import { IGridHeader } from '../../types/index';
 
 export interface GridFooterProps {
-    columnHeaders: string[]
+    columnHeaders: IGridHeader[]
 }
 
-export const GridFooter = ({ columnHeaders }: GridFooterProps) => (
+export const GridFooter: FunctionComponent<GridFooterProps> = ({ columnHeaders = [] }) => (
     <tfoot className={styles.footer}>
         <tr className={styles.row}>
-            { columnHeaders.map((columnFooter: string, index: number) => <td className={styles.cell} />) }
+            <td colSpan={columnHeaders.length} className={styles.cell} />
         </tr>
     </tfoot>
 );

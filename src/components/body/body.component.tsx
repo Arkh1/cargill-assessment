@@ -1,11 +1,9 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import styles from './body.module.scss'
 
-export interface BodyProps {
-    children: any
-}
+export interface BodyProps {}
 
-export const Body = ({ children }: BodyProps) => {
+export const Body: FunctionComponent<BodyProps> = ({ children }) => {
     return (
         <section className={styles.body}>
             { children }

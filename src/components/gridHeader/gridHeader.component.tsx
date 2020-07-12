@@ -1,23 +1,20 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import styles from './gridHeader.module.scss';
+import { IGridHeader } from '../../types/index';
 
 export interface GridHeaderProps {
-    columnHeaders: any[],
-    sortCb?: any
+    columnHeaders: IGridHeader[],
+    sortCb: (field: string) => void
 }
 
-export const GridHeader = ({ columnHeaders, sortCb }: GridHeaderProps) => (
+export const GridHeader: FunctionComponent<GridHeaderProps> = ({ columnHeaders = [], sortCb }) => (
     <thead className={styles.header}>
         <tr className={styles.row}>
-            { columnHeaders.map(({ displayName, field }: any, index: number) => {
-                return (
-                    <th key={field} className={styles.cell}>
-                        <div onClick={(e: any) => sortCb(field)}>
-                            { displayName }
-                        </div>
-                    </th>
-                )
-            })}
+            { columnHeaders.map(({ displayName, field }: IGridHeader, index: number) => (
+                <th key={field} className={styles.cell}>
+                    <div onClick={() => sortCb(field)}>{ displayName }</div>
+                </th>
+            ))}
         </tr>
     </thead>
 );

@@ -1,22 +1,27 @@
-import React, { useState } from 'react';
+import React, { FunctionComponent } from 'react';
 import styles from './gridBody.module.scss';
 
 export interface GridBodyProps {
-    data: any[],
-    selectCb?: any
+    data: Object[],
+    selectCb?: (row: Object) => void
 }
 
-export const GridBody = ({ data, selectCb}: GridBodyProps) => (
-    <tbody className={styles.body}>
+export const GridBody: FunctionComponent<GridBodyProps> = ({ data = [], selectCb}) => {
+    const handleRowClick = (row: Object) => {
+        if (selectCb) {
+            selectCb(row)
+        }
+    };
+
+    return (
+        <tbody className={styles.body}>
         {
-            data.map((row: any, index: number) => (
-                <tr aria-controls="cardInfo" key={row.name} className={styles.row} onClick={(e: any) => selectCb(row)}>
-                    { Object.entries(row).map((rowData: any[]) => {
-                        const [key, cellData] = rowData;
-                        return <td key={key} className={styles.cell}>{ cellData }</td>;
-                    })}
+            data.map((row: Object, index: number) => (
+                <tr aria-controls="cardInfo" key={index} className={styles.row} onClick={() => handleRowClick(row)}>
+                    { Object.entries(row).map(([key, cellData]: any[], index: number) => <td key={index} className={styles.cell}>{ cellData }</td>) }
                 </tr>
             ))
         }
-    </tbody>
-);
+        </tbody>
+    );
+}

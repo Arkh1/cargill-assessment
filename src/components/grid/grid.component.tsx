@@ -1,41 +1,23 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, FunctionComponent } from 'react';
 import styles from './grid.module.scss';
 import { GridHeader } from '../gridHeader/gridHeader.component';
 import { GridBody } from '../gridBody/gridBody.component';
 import { GridFooter } from '../gridFooter/gridFooter.component';
+import { IGridHeader } from '../../types/index';
+import { SORT_DIRECTION } from '../../consts/index';
+import { getSortedData } from '../../utils/array.util';
 
 export interface GridProps {
-    columnHeaders: any[],
+    columnHeaders: IGridHeader[],
     data: any[],
-    selectCb?: any
+    selectCb?: () => void
 }
 
-export const Grid = ({columnHeaders, data, selectCb}: GridProps) => {
-    const SORT_DIRECTION = {
-        ASCENDING: 'ascending',
-        DESCENDING: 'descending',
-    };
+export const Grid: FunctionComponent<GridProps> = ({columnHeaders = [], data = [], selectCb}) => {
     const [sortConfig, setSortConfig] = useState({ key: '', direction: '' });
-    const sortedData = useMemo(() => {
-        let sortableData = [...data];
-        if (sortConfig.key !== '') {
-            sortableData.sort((a, b) => {
-                if (a[sortConfig.key] < b[sortConfig.key]) {
-                    return sortConfig.direction === SORT_DIRECTION.ASCENDING ? -1 : 1;
-                }
-                if (a[sortConfig.key] > b[sortConfig.key]) {
-                    return sortConfig.direction === SORT_DIRECTION.ASCENDING ? 1 : -1;
-                }
-                return 0;
-            });
-        }
-        return sortableData;
-    }, [data, sortConfig, SORT_DIRECTION.ASCENDING]);
+    const sortedData = useMemo(() => getSortedData(sortConfig, data), [sortConfig, data]);
 
     const sortColumn = (key: string) => {
-        /*sortableData.sort((a,b) => a[formattedKey].localeCompare(b[formattedKey]));
-        setSortedData(sortableData);*/
-
         let direction = SORT_DIRECTION.ASCENDING;
         if (sortConfig && sortConfig.key === key && sortConfig.direction === SORT_DIRECTION.ASCENDING) {
             direction = SORT_DIRECTION.DESCENDING;
@@ -44,12 +26,14 @@ export const Grid = ({columnHeaders, data, selectCb}: GridProps) => {
     };
 
     return (
-        <div className={styles.gridContainer}>
-            <table className={styles.grid}>
-                <GridHeader columnHeaders={columnHeaders} sortCb={sortColumn} />
-                <GridBody data={sortedData} selectCb={selectCb} />
-                <GridFooter columnHeaders={columnHeaders} />
-            </table>
-        </div>
+        <>
+            <div className={styles.gridContainer}>
+                <table className={styles.grid}>
+                    <GridHeader columnHeaders={columnHeaders} sortCb={sortColumn} />
+                    <GridBody data={sortedData} selectCb={selectCb} />
+                    <GridFooter columnHeaders={columnHeaders} />
+                </table>
+            </div>
+        </>
     );
 };
